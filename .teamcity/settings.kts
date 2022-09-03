@@ -156,7 +156,7 @@ object BuildBinaries : Project({
 })
 
 object Build : BuildType({
-    name = "Build VMPC2000XL MacOS"
+    name = "Build VMPC2000XL MacOS binaries"
     description = "Build VMPC2000XL"
 
     artifactRules = """
@@ -174,8 +174,9 @@ object Build : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Xcode"
-                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_AU vmpc2000xl_VST3
+                cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+                cmake --build . --config Release \
+                --target vmpc2000xl_Standalone vmpc2000xl_AU vmpc2000xl_VST3
             """.trimIndent()
         }
     }
