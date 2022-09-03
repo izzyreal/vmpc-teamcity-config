@@ -175,7 +175,7 @@ object Build : BuildType({
             scriptContent = """
                 mkdir build && cd build
                 cmake .. -G "Xcode"
-                cmake --build . --config Release --target vmpc2000xl_All
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_AU vmpc2000xl_VST3
             """.trimIndent()
         }
     }
@@ -223,7 +223,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
                 -DPLATFORM=OS64COMBINED \
                 -DENABLE_ARC=0
-                cmake --build . --config Release --target vmpc2000xl_All
+                cmake --build . --config Release --target vmpc2000xl_Standalone
             """.trimIndent()
         }
         script {
