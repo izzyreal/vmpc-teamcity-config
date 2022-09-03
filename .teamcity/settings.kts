@@ -216,7 +216,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake ..\
+                cmake .. \
                 -G "Xcode" \
                 -DCMAKE_BUILD_TYPE="Release" \
                 -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
