@@ -284,7 +284,13 @@ object BuildVmpc2000xlUbuntu : BuildType({
     }
 
     steps {
-        // TODO -- Invoke `mkdir build && cd build && cmake .. && make -j 4`
+        script {
+            scriptContent = """
+                mkdir build && cd build
+                cmake ..
+                make vmpc2000xl_All -j 4
+            """.trimIndent()
+        }
     }
 
     features {
