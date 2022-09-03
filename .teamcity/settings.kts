@@ -160,8 +160,8 @@ object Build : BuildType({
     description = "Build VMPC2000XL"
 
     artifactRules = """
-        vmpc-juce/build/vmpc2000xl_artefacts/Release => binaries/macos
-        -:vmpc-juce/build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
+        build/vmpc2000xl_artefacts/Release => binaries/macos
+        -:build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
 
@@ -272,9 +272,9 @@ object BuildVmpc2000xlUbuntu : BuildType({
     description = "Build VMPC2000XL Ubuntu binaries"
 
     artifactRules = """
-        vmpc-juce/build/vmpc2000xl_artefacts/Release => binaries
-        -:vmpc-juce/build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
-        vmpc-juce/build/version.txt => binaries
+        build/vmpc2000xl_artefacts/Release => binaries
+        -:build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
+        build/version.txt => binaries
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
 
@@ -301,8 +301,8 @@ object BuildVmpc2000xlWindows32bit : BuildType({
     description = "Build VMPC2000XL"
 
     artifactRules = """
-        vmpc-juce/build/vmpc2000xl_artefacts/Release => binaries/win32
-        -:vmpc-juce/build/vmpc2000xl_artefacts/Release/VMPC2000XL_SharedCode.lib
+        build/vmpc2000xl_artefacts/Release => binaries/win32
+        -:build/vmpc2000xl_artefacts/Release/VMPC2000XL_SharedCode.lib
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
 
@@ -336,8 +336,8 @@ object BuildVmpc2000xlWindows64bit : BuildType({
     description = "Build VMPC2000XL"
 
     artifactRules = """
-        vmpc-juce/build/vmpc2000xl_artefacts/Release => binaries/win64
-        -:vmpc-juce/build/vmpc2000xl_artefacts/Release/VMPC2000XL_SharedCode.lib
+        build/vmpc2000xl_artefacts/Release => binaries/win64
+        -:build/vmpc2000xl_artefacts/Release/VMPC2000XL_SharedCode.lib
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
 
