@@ -445,6 +445,7 @@ object BuildMacOSInstaller : BuildType({
 
     params {
         param("env.version", "0")
+        param("github-secret", "%vault:kv/gh!/token%")
     }
 
     vcs {
