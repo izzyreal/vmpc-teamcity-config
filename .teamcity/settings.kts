@@ -288,8 +288,8 @@ object BuildVmpc2000xlUbuntu : BuildType({
         script {
             scriptContent = """
                 mkdir build && cd build
-                cmake .. --config Release 
-                make vmpc2000xl_All -j 4
+                cmake .. -G "Ninja Multi-Config" 
+                ninja -f build-Release.ninja vmpc2000xl_All
             """.trimIndent()
         }
     }
