@@ -230,6 +230,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
         script {
             name = "xcodebuild AppStore archive"
             scriptContent = """
+                cd build
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_Standalone \
                 -allowProvisioningUpdates \
@@ -242,6 +243,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
         script {
             name = "xcodebuild publish to AppStore"
             scriptContent = """
+                cd build
                 xcodebuild -exportArchive \
                 -archivePath ./vmpc2000xl_StandaloneAndAUv3.xcarchive \
                 -exportOptionsPlist ../ExportOptions.plist \
