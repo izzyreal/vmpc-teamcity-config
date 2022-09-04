@@ -202,8 +202,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
     description = "Build VMPC2000XL standalone and AUv3"
 
     artifactRules = """
-        build/vmpc2000xl_AUv3.xcarchive => build/vmpc2000xl_AUv3.xcarchive
-        build/vmpc2000xl_Standalone.xcarchive => build/vmpc2000xl_Standalone.xcarchive
+        build/vmpc2000xl_StandaloneAndAUv3.xcarchive
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
 
