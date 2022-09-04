@@ -324,7 +324,7 @@ object BuildVmpc2000xlWindows32bit : BuildType({
             scriptContent = """
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -A Win32
-                cmake --build . --config Release --target vmpc2000xl_All
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
     }
@@ -359,7 +359,7 @@ object BuildVmpc2000xlWindows64bit : BuildType({
             scriptContent = """
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019"
-                cmake --build . --config Release --target vmpc2000xl_All
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
     }
