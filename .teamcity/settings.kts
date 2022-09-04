@@ -224,13 +224,13 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
                 -DPLATFORM=OS64COMBINED \
                 -DENABLE_ARC=0
-                cmake --build . --config Release --target vmpc2000xl_Standalone
+                cmake --build . --config Release --target vmpc2000xl
             """.trimIndent()
         }
         script {
             name = "xcodebuild AppStore archive"
             scriptContent = """
-                xcodebuild -project vmpc-juce.xcodeproj \
+                xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_Standalone \
                 -allowProvisioningUpdates \
                 -sdk iphoneos \
