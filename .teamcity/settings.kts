@@ -249,7 +249,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -exportPath "./" \
                 -allowProvisioningUpdates
             """.trimIndent()
-            enabled = false
+            enabled = true
         }
     }
 
