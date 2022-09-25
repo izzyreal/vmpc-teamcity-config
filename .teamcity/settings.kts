@@ -214,16 +214,18 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
         script {
             name = "CMake configure and build"
             scriptContent = """
-                mkdir build && cd build
-                cmake .. \
+                mkdir build
+                cmake \
+                -B build \
                 -G "Xcode" \
                 -DCMAKE_BUILD_TYPE="Release" \
                 -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
                 -DCMAKE_SYSTEM_NAME=iOS \
                 -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
-                -DPLATFORM=OS64COMBINED \
+                -DPLATFORM=OS64 \
                 -DENABLE_ARC=0
-                cmake --build . --config Release --target vmpc2000xl
+                cd build
+                cmake --build . --config Release --target vmpc2000xl_Standalone
             """.trimIndent()
         }
         script {
