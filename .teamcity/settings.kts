@@ -219,9 +219,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -B build \
                 -G "Xcode" \
                 -DCMAKE_BUILD_TYPE="Release" \
-                -DCMAKE_OSX_DEPLOYMENT_TARGET=9.3 \
                 -DCMAKE_SYSTEM_NAME=iOS \
-                -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
                 -DPLATFORM=OS64 \
                 -DENABLE_ARC=0
                 cd build
