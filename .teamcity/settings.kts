@@ -193,7 +193,7 @@ object Build : BuildType({
     }
 
     requirements {
-        exists("tools.xcode.arch.macosx.Universal")
+        exists("tools.xcode.platform.macosx")
     }
 })
 
@@ -265,7 +265,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
     }
 
     requirements {
-        exists("tools.xcode.arch.macosx.Universal")
+        exists("tools.xcode.platform.iphoneos")
     }
 })
 
