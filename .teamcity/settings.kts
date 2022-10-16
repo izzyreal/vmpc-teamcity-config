@@ -514,7 +514,7 @@ object Vmpc2000xlDocumentation : Project({
 })
 
 object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
-    name = "Build and publish HTML"
+    name = "Build and publish HTML and PDF"
 
     artifactRules = "_build => _build"
 
