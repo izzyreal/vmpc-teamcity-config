@@ -533,9 +533,23 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
             scriptContent = "sphinx-build . ./_build"
         }
         sshUpload {
-            name = "Publish"
+            name = "Publish HTML"
             transportProtocol = SSHUpload.TransportProtocol.SFTP
             sourcePath = "_build/**"
+            targetUrl = "sftp.izmar.nl:public/sites/vmpcdocs.izmar.nl"
+            authMethod = password {
+                username = "%sftp-user%"
+                password = "%sftp-password%"
+            }
+        }
+        script {
+            name = "Build PDF"
+            scriptContent = "sphinx-build -b rinoh . ./_build/rinoh"
+        }
+        sshUpload {
+            name = "Publish PDF"
+            transportProtocol = SSHUpload.TransportProtocol.SFTP
+            sourcePath = "_build/rinoh/vmpc2000xl.pdf"
             targetUrl = "sftp.izmar.nl:public/sites/vmpcdocs.izmar.nl"
             authMethod = password {
                 username = "%sftp-user%"
