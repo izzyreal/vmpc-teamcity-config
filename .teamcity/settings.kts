@@ -564,6 +564,11 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
         }
     }
 
+    features {
+        swabra {
+        }
+    }
+    
     requirements {
         equals("teamcity.agent.name", "Default Agent")
     }
