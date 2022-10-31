@@ -101,7 +101,8 @@ object Release : BuildType({
                 sleep 1
                 
                 github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Installer-Intel-M1.pkg --file ${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
-                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Installer-x86_64.exe --file ${'$'}{version}/win/VMPC2000XL-Installer-x86_64.exe
+                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Installer-Win7-x86_64.exe --file ${'$'}{version}/win/VMPC2000XL-Installer-Win7-x86_64.exe
+                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Installer-Win10-x86_64.exe --file ${'$'}{version}/win/VMPC2000XL-Installer-Win10-x86_64.exe
                 github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-LV2.zip --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-LV2.zip
                 github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-Standalone.zip --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-Standalone.zip
                 github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-VST3.zip --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-VST3.zip
@@ -110,10 +111,15 @@ object Release : BuildType({
     }
 
     dependencies {
-        artifacts(BuildWindowsInstaller) {
+        artifacts(BuildWindows7Installer) {
             buildRule = lastSuccessful()
             cleanDestination = true
-            artifactRules = "**/win/VMPC2000XL-Installer-x86_64.exe"
+            artifactRules = "**/win/VMPC2000XL-Installer-Win7-x86_64.exe"
+        }
+        artifacts(BuildWindows10Installer) {
+            buildRule = lastSuccessful()
+            cleanDestination = true
+            artifactRules = "**/win/VMPC2000XL-Installer-Win10-x86_64.exe"
         }
         artifacts(BuildMacOSInstaller) {
             buildRule = lastSuccessful()
@@ -149,9 +155,11 @@ object BuildBinaries : Project({
     name = "Build binaries"
 
     buildType(Build)
-    buildType(BuildVmpc2000xlWindows64bit)
+    buildType(BuildVmpc2000xlWindows7_32bit)
+    buildType(BuildVmpc2000xlWindows7_64bit)
+    buildType(BuildVmpc2000xlWindows10_32bit)
+    buildType(BuildVmpc2000xlWindows10_64bit)
     buildType(BuildBinaries_BuildVmpc2000xlIOS)
-    buildType(BuildVmpc2000xlWindows32bit)
     buildType(BuildVmpc2000xlUbuntu)
 })
 
@@ -305,8 +313,8 @@ object BuildVmpc2000xlUbuntu : BuildType({
     }
 })
 
-object BuildVmpc2000xlWindows32bit : BuildType({
-    name = "Build VMPC2000XL Windows 32-bit"
+object BuildVmpc2000xlWindows10_32bit : BuildType({
+    name = "Build VMPC2000XL Windows 10 32-bit"
     description = "Build VMPC2000XL"
 
     artifactRules = """
@@ -340,8 +348,43 @@ object BuildVmpc2000xlWindows32bit : BuildType({
     }
 })
 
-object BuildVmpc2000xlWindows64bit : BuildType({
-    name = "Build VMPC2000XL Windows 64-bit"
+object BuildVmpc2000xlWindows7_32bit : BuildType({
+    name = "Build VMPC2000XL Windows 7 32-bit"
+    description = "Build VMPC2000XL"
+
+    artifactRules = """
+        build/vmpc2000xl_artefacts/Release => binaries/win32
+        -:build/vmpc2000xl_artefacts/Release/VMPC2000XL_SharedCode.lib
+    """.trimIndent()
+    publishArtifacts = PublishMode.SUCCESSFUL
+
+    vcs {
+        root(HttpsGithubComIzzyrealVmpcJuce)
+    }
+
+    steps {
+        script {
+            name = "CMake configure and build"
+            scriptContent = """
+                mkdir build && cd build
+                cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
+            """.trimIndent()
+        }
+    }
+
+    features {
+        swabra {
+        }
+    }
+
+    requirements {
+        equals("teamcity.agent.jvm.os.name", "Windows 10")
+    }
+})
+
+object BuildVmpc2000xlWindows10_64bit : BuildType({
+    name = "Build VMPC2000XL Windows 10 64-bit"
     description = "Build VMPC2000XL"
 
     artifactRules = """
@@ -375,6 +418,40 @@ object BuildVmpc2000xlWindows64bit : BuildType({
     }
 })
 
+object BuildVmpc2000xlWindows7_64bit : BuildType({
+    name = "Build VMPC2000XL Windows 7 64-bit"
+    description = "Build VMPC2000XL"
+
+    artifactRules = """
+        build/vmpc2000xl_artefacts/Release => binaries/win64
+        -:build/vmpc2000xl_artefacts/Release/VMPC2000XL_SharedCode.lib
+    """.trimIndent()
+    publishArtifacts = PublishMode.SUCCESSFUL
+
+    vcs {
+        root(HttpsGithubComIzzyrealVmpcJuce)
+    }
+
+    steps {
+        script {
+            name = "CMake configure and build"
+            scriptContent = """
+                mkdir build && cd build
+                cmake .. -G "Visual Studio 16 2019" -DVMPC2000XL_WIN7=1
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
+            """.trimIndent()
+        }
+    }
+
+    features {
+        swabra {
+        }
+    }
+
+    requirements {
+        equals("teamcity.agent.jvm.os.name", "Windows 10")
+    }
+})
 
 object BuildInstallers : Project({
     name = "Build installers"
@@ -382,14 +459,15 @@ object BuildInstallers : Project({
     vcsRoot(BuildInstallers_VmpcInstallerScripts)
 
     buildType(BuildMacOSInstaller)
-    buildType(BuildWindowsInstaller)
+    buildType(BuildWindows7Installer)
+    buildType(BuildWindows10Installer)
 })
 
-object BuildWindowsInstaller : BuildType({
-    name = "Build Windows installer"
+object BuildWindows10Installer : BuildType({
+    name = "Build Windows 10 installer"
     description = "Build Windows 10 32/64-bit installer"
 
-    artifactRules = """installers\**\win\VMPC2000XL-Installer-x86_64.exe"""
+    artifactRules = """installers\**\win\VMPC2000XL-Installer-Win10-x86_64.exe"""
 
     vcs {
         root(BuildInstallers_VmpcInstallerScripts)
@@ -397,7 +475,7 @@ object BuildWindowsInstaller : BuildType({
 
     steps {
         powerShell {
-            name = "Build 32/64-bit installer"
+            name = "Build Windows 10 32/64-bit installer"
             scriptMode = script {
                 content = """
                     ${'$'}env:VERSION_IN_EXECUTABLE = (Get-Command binaries\win64\Standalone\VMPC2000XL.exe).FileVersionInfo.FileVersion
@@ -425,12 +503,65 @@ object BuildWindowsInstaller : BuildType({
     }
 
     dependencies {
-        artifacts(BuildVmpc2000xlWindows32bit) {
+        artifacts(BuildVmpc2000xlWindows10_32bit) {
             buildRule = lastSuccessful()
             cleanDestination = true
             artifactRules = "binaries => binaries"
         }
-        artifacts(BuildVmpc2000xlWindows64bit) {
+        artifacts(BuildVmpc2000xlWindows10_64bit) {
+            buildRule = lastSuccessful()
+            cleanDestination = true
+            artifactRules = "binaries => binaries"
+        }
+    }
+})
+
+object BuildWindows7Installer : BuildType({
+    name = "Build Windows 7 installer"
+    description = "Build Windows 7 32/64-bit installer"
+
+    artifactRules = """installers\**\win\VMPC2000XL-Installer-Win7-x86_64.exe"""
+
+    vcs {
+        root(BuildInstallers_VmpcInstallerScripts)
+    }
+
+    steps {
+        powerShell {
+            name = "Build Windows 7 32/64-bit installer"
+            scriptMode = script {
+                content = """
+                    ${'$'}env:VERSION_IN_EXECUTABLE = (Get-Command binaries\win64\Standalone\VMPC2000XL.exe).FileVersionInfo.FileVersion
+                    
+                    ${'$'}env:32_BIT_EXECUTABLE_PATH = '..\binaries\win32\Standalone\VMPC2000XL.exe'
+                    ${'$'}env:32_BIT_VST3_PATH       = '..\binaries\win32\VST3\VMPC2000XL.vst3\*'
+                    
+                    ${'$'}env:64_BIT_EXECUTABLE_PATH = '..\binaries\win64\Standalone\VMPC2000XL.exe'
+                    ${'$'}env:64_BIT_VST3_PATH       = '..\binaries\win64\VST3\VMPC2000XL.vst3\*'
+                    
+                    ${'$'}env:DEMO_DATA_PATH         = '..\demo_data\*'
+                    ${'$'}env:INSTALLER_SCRIPT_PATH  = '%teamcity.build.workingDir%\win\vmpc.iss'
+                    
+                    ${'$'}env:OUTPUT_DIR             = '%teamcity.build.workingDir%\installers\' + ${'$'}env:VERSION_IN_EXECUTABLE + '\win'
+                    
+                    iscc ${'$'}env:INSTALLER_SCRIPT_PATH
+                """.trimIndent()
+            }
+        }
+    }
+
+    features {
+        swabra {
+        }
+    }
+
+    dependencies {
+        artifacts(BuildVmpc2000xlWindows7_32bit) {
+            buildRule = lastSuccessful()
+            cleanDestination = true
+            artifactRules = "binaries => binaries"
+        }
+        artifacts(BuildVmpc2000xlWindows7_64bit) {
             buildRule = lastSuccessful()
             cleanDestination = true
             artifactRules = "binaries => binaries"
