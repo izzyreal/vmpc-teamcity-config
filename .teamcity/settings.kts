@@ -274,7 +274,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
     }
 
     requirements {
-        exists("tools.xcode.platform.iphoneos")
+        equals("teamcity.agent.name", "Default Agent")
     }
 })
 
