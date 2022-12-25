@@ -154,7 +154,8 @@ object HttpsGithubComIzzyrealVmpcJuce : GitVcsRoot({
 object BuildBinaries : Project({
     name = "Build binaries"
 
-    buildType(Build)
+    buildType(BuildMacOSBinaries)
+    buildType(CodesignMacOSBinaries)
     buildType(BuildVmpc2000xlWindows7_32bit)
     buildType(BuildVmpc2000xlWindows7_64bit)
     buildType(BuildVmpc2000xlWindows10_32bit)
@@ -163,7 +164,7 @@ object BuildBinaries : Project({
     buildType(BuildVmpc2000xlUbuntu)
 })
 
-object Build : BuildType({
+object BuildMacOSBinaries : BuildType({
     name = "Build VMPC2000XL MacOS binaries"
     description = "Build VMPC2000XL"
 
@@ -569,8 +570,58 @@ object BuildWindows7Installer : BuildType({
     }
 })
 
+object CodesignMacOSBinaries : BuildType({
+    name = "CodesignMacOSBinaries"
+
+    artifactRules = "binaries/**"
+    publishArtifacts = PublishMode.SUCCESSFUL
+
+    params {
+        param("dev-identity-app", "%vault:kv/apple-id!/dev-identity-app%")
+    }
+
+    steps {
+        script {
+            name = "Codesign binaries"
+            scriptContent = """
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/Standalone/VMPC2000XL.app \
+                --deep --strict --options=runtime --timestamp
+               
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/Standalone/VMPC2000XL.app/Contents/PlugIns/VMPC2000XL.appex \
+                --deep --strict --options=runtime --timestamp
+               
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/AU/VMPC2000XL.component \
+                --deep --strict --options=runtime --timestamp
+               
+               codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/VST3/VMPC2000XL.vst3 \
+                --deep --strict --options=runtime --timestamp
+            """.trimIndent()
+        }
+    }
+
+    features {
+        swabra {
+        }
+    }
+
+    dependencies {
+        artifacts(BuildMacOSBinaries) {
+            buildRule = lastSuccessful()
+            artifactRules = "binaries/macos => binaries"
+        }
+    }
+
+    requirements {
+        equals("teamcity.agent.jvm.os.name", "Mac OS X")
+    }
+})
+
 object BuildMacOSInstaller : BuildType({
-    name = "Build MacOS installer"
+    name = "Build macOS installer"
 
     artifactRules = "installers/**/mac/VMPC2000XL-Installer-Intel-M1.pkg"
     publishArtifacts = PublishMode.SUCCESSFUL
@@ -578,6 +629,9 @@ object BuildMacOSInstaller : BuildType({
     params {
         param("env.version", "0")
         param("github-secret", "%vault:kv/gh!/token%")
+        param("notarytool-password", "%vault:kv/notarytool!/password%")
+        param("team-id", "%vault:kv/apple-id!/team-id%")
+        param("dev-identity-installer", "%vault:kv/apple-id!/dev-identity-installer%")
     }
 
     vcs {
@@ -605,8 +659,20 @@ object BuildMacOSInstaller : BuildType({
                 mkdir -p installers/${'$'}{version}/mac
                 
                 chmod +x ./binaries/Standalone/VMPC2000XL.app/Contents/MacOS/VMPC2000XL
-                
+                               
                 packagesbuild --build-folder %teamcity.build.workingDir%/installers/${'$'}{version}/mac ./mac/VMPC2000XL.pkgproj
+                
+                mv %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
+                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg
+                
+                productsign --sign "%dev-identity-installer%" \
+                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg \
+                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
+                
+                xcrun notarytool submit %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
+                --apple-id izmaelverhage@gmail.com --password %notarytool-password% --team-id %team-id% --wait
+                
+                xcrun stapler staple %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
             """.trimIndent()
         }
     }
@@ -617,9 +683,9 @@ object BuildMacOSInstaller : BuildType({
     }
 
     dependencies {
-        artifacts(Build) {
+        artifacts(CodesignMacOSBinaries) {
             buildRule = lastSuccessful()
-            artifactRules = "binaries/macos => binaries"
+            artifactRules = "binaries => binaries"
         }
     }
 
