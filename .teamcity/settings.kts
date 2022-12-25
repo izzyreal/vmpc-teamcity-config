@@ -606,10 +606,6 @@ object CodesignMacOSBinaries : BuildType({
                 --deep --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
-                -v ./binaries/Standalone/VMPC2000XL.app/Contents/PlugIns/VMPC2000XL.appex \
-                --deep --strict --options=runtime --timestamp
-               
-                codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/AU/VMPC2000XL.component \
                 --deep --strict --options=runtime --timestamp
                
