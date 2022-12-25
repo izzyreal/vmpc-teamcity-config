@@ -590,7 +590,7 @@ object BuildWindows7Installer : BuildType({
 object CodesignMacOSBinaries : BuildType({
     name = "CodesignMacOSBinaries"
 
-    artifactRules = "binaries/**"
+    artifactRules = "binaries/* => binaries/*"
     publishArtifacts = PublishMode.SUCCESSFUL
 
     params {
