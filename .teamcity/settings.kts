@@ -183,7 +183,8 @@ object BuildMacOSBinaries : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+                cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+                -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON and -DCMAKE_CMP0069=NEW
                 
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_Standalone \
@@ -315,7 +316,8 @@ object BuildVmpc2000xlUbuntu : BuildType({
         script {
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Ninja Multi-Config" 
+                cmake .. -G "Ninja Multi-Config" \
+                -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON and -DCMAKE_CMP0069=NEW 
                 ninja -f build-Release.ninja vmpc2000xl_All
             """.trimIndent()
         }
@@ -350,7 +352,8 @@ object BuildVmpc2000xlWindows10_32bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019" -A Win32
+                cmake .. -G "Visual Studio 16 2019" -A Win32 \
+                -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON and -DCMAKE_CMP0069=NEW
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
@@ -385,7 +388,8 @@ object BuildVmpc2000xlWindows7_32bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1
+                cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1 \
+                -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON and -DCMAKE_CMP0069=NEW
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
@@ -420,7 +424,8 @@ object BuildVmpc2000xlWindows10_64bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019"
+                cmake .. -G "Visual Studio 16 2019" \
+                -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON and -DCMAKE_CMP0069=NEW
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
@@ -455,7 +460,8 @@ object BuildVmpc2000xlWindows7_64bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019" -DVMPC2000XL_WIN7=1
+                cmake .. -G "Visual Studio 16 2019" -DVMPC2000XL_WIN7=1 \
+                -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON and -DCMAKE_CMP0069=NEW
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
