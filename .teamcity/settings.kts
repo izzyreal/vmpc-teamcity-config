@@ -516,6 +516,7 @@ object BuildWindows10Installer : BuildType({
                     ${'$'}env:OUTPUT_DIR             = '%teamcity.build.workingDir%\installers\' + ${'$'}env:VERSION_IN_EXECUTABLE + '\win'
                     
                     iscc ${'$'}env:INSTALLER_SCRIPT_PATH
+                    mv ${'$'}env:OUTPUT_DIR\VMPC2000XL-Installer-x86_64.exe ${'$'}env:OUTPUT_DIR\VMPC2000XL-Installer-Win10-x86_64.exe
                 """.trimIndent()
             }
         }
@@ -569,6 +570,7 @@ object BuildWindows7Installer : BuildType({
                     ${'$'}env:OUTPUT_DIR             = '%teamcity.build.workingDir%\installers\' + ${'$'}env:VERSION_IN_EXECUTABLE + '\win'
                     
                     iscc ${'$'}env:INSTALLER_SCRIPT_PATH
+                    mv ${'$'}env:OUTPUT_DIR\VMPC2000XL-Installer-x86_64.exe ${'$'}env:OUTPUT_DIR\VMPC2000XL-Installer-Win7-x86_64.exe
                 """.trimIndent()
             }
         }
