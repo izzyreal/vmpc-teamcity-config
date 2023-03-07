@@ -248,8 +248,6 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -G "Xcode" \
                 -DCMAKE_BUILD_TYPE="Release" \
                 -DCMAKE_SYSTEM_NAME=iOS \
-                -DPLATFORM=OS64 \
-                -DENABLE_ARC=0
                 cd build
                 cmake --build . --config Release --target vmpc2000xl_Standalone
             """.trimIndent()
