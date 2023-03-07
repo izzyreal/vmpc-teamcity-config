@@ -243,6 +243,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
             scriptContent = """
                 mkdir build
                 cmake \
+                -Wno-dev \
                 -B build \
                 -G "Xcode" \
                 -DCMAKE_BUILD_TYPE="Release" \
