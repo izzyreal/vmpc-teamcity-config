@@ -247,7 +247,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -B build \
                 -G "Xcode" \
                 -DCMAKE_BUILD_TYPE="Release" \
-                -DCMAKE_SYSTEM_NAME=iOS \
+                -DCMAKE_SYSTEM_NAME=iOS
                 cd build
                 xcodebuild -project vmpc2000xl.xcodeproj build -target vmpc2000xl_Standalone -parallelizeTargets -configuration Release -allowProvisioningUpdates
             """.trimIndent()
@@ -291,7 +291,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
     }
 
     requirements {
-        equals("teamcity.agent.name", "Default Agent")
+        equals("teamcity.agent.jvm.os.name", "Mac OS X")
     }
 })
 
