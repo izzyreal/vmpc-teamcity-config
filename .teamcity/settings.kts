@@ -249,7 +249,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -DCMAKE_BUILD_TYPE="Release" \
                 -DCMAKE_SYSTEM_NAME=iOS \
                 cd build
-                cmake --build . --config Release --target vmpc2000xl_Standalone
+                xcodebuild -project vmpc2000xl.xcodeproj build -target vmpc2000xl_Standalone -parallelizeTargets -configuration Release -allowProvisioningUpdates
             """.trimIndent()
         }
         script {
