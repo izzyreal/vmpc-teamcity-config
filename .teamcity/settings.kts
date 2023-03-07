@@ -220,7 +220,7 @@ object BuildMacOSBinaries : BuildType({
     }
 
     requirements {
-        exists("tools.xcode.platform.macosx")
+        equals("teamcity.agent.jvm.os.name", "Mac OS X")
     }
 })
 
