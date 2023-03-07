@@ -239,7 +239,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
 
     steps {
         script {
-            name = "CMake configure and build"
+            name = "CMake configure"
             scriptContent = """
                 mkdir build
                 cmake \
@@ -248,6 +248,11 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -G "Xcode" \
                 -DCMAKE_BUILD_TYPE="Release" \
                 -DCMAKE_SYSTEM_NAME=iOS
+            """.trimIndent()
+        }
+        script {
+            name = "xcodebuild"
+            scriptContent = """
                 cd build
                 xcodebuild -project vmpc2000xl.xcodeproj build -target vmpc2000xl_Standalone -parallelizeTargets -configuration Release -allowProvisioningUpdates
             """.trimIndent()
