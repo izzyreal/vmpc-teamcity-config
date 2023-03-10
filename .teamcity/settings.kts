@@ -188,7 +188,8 @@ object BuildMacOSBinaries : BuildType({
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_Standalone \
                 -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release
+                -configuration Release \
+                -allowProvisioningUpdates
                 
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_AU \
