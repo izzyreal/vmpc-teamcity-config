@@ -78,7 +78,7 @@ object CompressUbuntuBinaries : BuildType({
     }
 
     requirements {
-        equals("system.agent.name", "ubuntu-vm")
+        equals("teamcity.agent.jvm.os.name", "Linux")
     }
 })
 
@@ -139,7 +139,7 @@ object Release : BuildType({
     }
 
     requirements {
-        equals("teamcity.agent.name", "Default Agent")
+        equals("teamcity.agent.name", "localhost")
     }
 })
 
@@ -787,9 +787,9 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
         swabra {
         }
     }
-    
+
     requirements {
-        equals("teamcity.agent.name", "Default Agent")
+        equals("teamcity.agent.jvm.os.name", "Linux")
     }
 })
 
