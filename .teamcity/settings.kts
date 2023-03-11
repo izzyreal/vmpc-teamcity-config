@@ -96,16 +96,47 @@ object Release : BuildType({
                 version=${'$'}(cat version.txt)
                 echo "Creating release for v${'$'}version"
                 
-                github-release release --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name "VMPC2000XL v${'$'}{version}" --description "https://github.com/izzyreal/mpc/blob/master/CHANGELOG.md"
+                docker stop golang-github-release || true && docker rm golang-github-release || true
+                docker run -d --name golang-github-release -v ${'$'}(pwd):/home/vmpc-release-binaries golang-github-release sleep infinity
+                                
+                docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
+                  "github-release release --security-token %github-secret% --user izzyreal \
+                    --repo vmpc-juce --tag v${'$'}{version} --name \"VMPC2000XL v${'$'}{version}\" \
+                    --description \"https://github.com/izzyreal/mpc/blob/master/CHANGELOG.md\""
                 
-                sleep 1
+                docker exec golang-github-release sh -c "sleep 1"
                 
-                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Installer-Intel-M1.pkg --file ${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
-                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Installer-Win7-x86_64.exe --file ${'$'}{version}/win/VMPC2000XL-Installer-Win7-x86_64.exe
-                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Installer-Win10-x86_64.exe --file ${'$'}{version}/win/VMPC2000XL-Installer-Win10-x86_64.exe
-                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-LV2.zip --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-LV2.zip
-                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-Standalone.zip --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-Standalone.zip
-                github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-VST3.zip --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-VST3.zip
+                docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
+                  "github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce \
+                    --tag v${'$'}{version} --name VMPC2000XL-Installer-Intel-M1.pkg \
+                    --file ${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg"
+                
+                docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
+                  "github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce \
+                    --tag v${'$'}{version} --name VMPC2000XL-Installer-Win7-x86_64.exe \
+                    --file ${'$'}{version}/win/VMPC2000XL-Installer-Win7-x86_64.exe"
+                
+                docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
+                  "github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce \
+                    --tag v${'$'}{version} --name VMPC2000XL-Installer-Win10-x86_64.exe \
+                    --file ${'$'}{version}/win/VMPC2000XL-Installer-Win10-x86_64.exe"
+                
+                docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
+                  "github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce \
+                    --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-LV2.zip \
+                    --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-LV2.zip"
+                
+                docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
+                  "github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce \
+                    --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-Standalone.zip \
+                    --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-Standalone.zip"
+                
+                docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
+                  "github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce \
+                    --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-VST3.zip \
+                    --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-VST3.zip"
+                
+                docker stop golang-github-release && docker remove golang-github-release
             """.trimIndent()
         }
     }
@@ -319,11 +350,12 @@ object BuildVmpc2000xlUbuntu : BuildType({
     steps {
         script {
             scriptContent = """
-                docker stop ubuntu-vmpc && docker remove ubuntu-vmpc
+                docker stop ubuntu-vmpc || true && docker rm ubuntu-vmpc || true
                 docker run -d --name ubuntu-vmpc -v ${'$'}(pwd):/home/vmpc-juce ubuntu-vmpc sleep infinity
-                docker exec -w /home/vmpc-juce ubuntu-vmpc sh -c 
+                docker exec -w /home/vmpc-juce ubuntu-vmpc sh -c \
                   "cmake -B build -G \"Ninja Multi-Config\" -Wno-dev && \
                     ninja -f ./build/build-Release.ninja vmpc2000xl_All"
+                docker stop ubuntu-vmpc && docker remove ubuntu-vmpc
             """.trimIndent()
         }
     }
