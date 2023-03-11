@@ -389,7 +389,7 @@ object BuildVmpc2000xlWindows10_32bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019" -A Win32
+                cmake .. -G "Visual Studio 16 2019" -A Win32 -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
@@ -424,7 +424,7 @@ object BuildVmpc2000xlWindows7_32bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1
+                cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1 -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
@@ -459,7 +459,7 @@ object BuildVmpc2000xlWindows10_64bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019"
+                cmake .. -G "Visual Studio 16 2019" -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
@@ -494,7 +494,7 @@ object BuildVmpc2000xlWindows7_64bit : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 16 2019" -DVMPC2000XL_WIN7=1
+                cmake .. -G "Visual Studio 16 2019" -DVMPC2000XL_WIN7=1 -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
