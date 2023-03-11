@@ -354,7 +354,7 @@ object BuildVmpc2000xlUbuntu : BuildType({
                 docker run -d --name ubuntu-vmpc -v ${'$'}(pwd):/home/vmpc-juce ubuntu-vmpc sleep infinity
                 docker exec -w /home/vmpc-juce ubuntu-vmpc sh -c \
                   "cmake -B build -G \"Ninja Multi-Config\" -Wno-dev && \
-                    ninja -f ./build/build-Release.ninja vmpc2000xl_All"
+                    cd build && ninja -f build-Release.ninja vmpc2000xl_All"
                 docker stop ubuntu-vmpc && docker remove ubuntu-vmpc
             """.trimIndent()
         }
