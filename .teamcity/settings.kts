@@ -780,8 +780,14 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
 
     steps {
         script {
-            name = "Build HTML"
-            scriptContent = "sphinx-build . ./_build"
+            name = "Build HTML and PDF"
+            scriptContent = """
+                docker stop sphinx-build && docker remove sphinx-build
+                docker run -d --name sphinx-build -v ${'$'}(pwd):/home/vmpc-docs sphinx-build sleep infinity
+                docker exec -w /home/vmpc-docs sphinx-build sh -c "sphinx-build . ./_build"
+                docker exec -w /home/vmpc-docs sphinx-build sh -c "sphinx-build -b rinoh . ./_build/rinoh"
+                docker stop sphinx-build && docker remove sphinx-build
+            """.trimIndent()
         }
         sshUpload {
             name = "Publish HTML"
@@ -792,10 +798,6 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
                 username = "%sftp-user%"
                 password = "%sftp-password%"
             }
-        }
-        script {
-            name = "Build PDF"
-            scriptContent = "sphinx-build -b rinoh . ./_build/rinoh"
         }
         sshUpload {
             name = "Publish PDF"
