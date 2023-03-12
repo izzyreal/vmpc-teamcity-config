@@ -642,17 +642,7 @@ object CodesignMacOSBinaries : BuildType({
         script {
             name = "Codesign binaries"
             scriptContent = """
-                codesign --force -s "%dev-identity-app%" \
-                -v ./binaries/Standalone/VMPC2000XL.app \
-                --deep --strict --options=runtime --timestamp
-               
-                codesign --force -s "%dev-identity-app%" \
-                -v ./binaries/AU/VMPC2000XL.component \
-                --deep --strict --options=runtime --timestamp
-               
-               codesign --force -s "%dev-identity-app%" \
-                -v ./binaries/VST3/VMPC2000XL.vst3 \
-                --deep --strict --options=runtime --timestamp
+                echo 'Hi'
             """.trimIndent()
         }
     }
