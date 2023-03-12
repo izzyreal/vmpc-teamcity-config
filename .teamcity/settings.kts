@@ -642,6 +642,8 @@ object CodesignMacOSBinaries : BuildType({
         script {
             name = "Codesign binaries"
             scriptContent = """
+                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/Entitlements.plist
+
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app \
                 --entitlements ./binaries/Entitlements.plist \
