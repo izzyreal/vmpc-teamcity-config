@@ -217,8 +217,7 @@ object BuildMacOSBinaries : BuildType({
                 cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -Wno-dev
 
                 cmake --build . --config Release \
-                --target vmpc2000xl_Standalone vmpc2000xl_AU vmpc2000xl_VST3 vmpc2000xl_LV2 \
-                -- -allowProvisioningUpdates
+                --target vmpc2000xl_Standalone vmpc2000xl_AU vmpc2000xl_VST3 vmpc2000xl_LV2
             """.trimIndent()
         }
     }
@@ -625,18 +624,17 @@ object CodesignMacOSBinaries : BuildType({
         script {
             name = "Codesign binaries"
             scriptContent = """
-                echo 'Skipping codesigning due to housekeeping issues.'
-                #codesign --force -s "%dev-identity-app%" \
-                #-v ./binaries/Standalone/VMPC2000XL.app \
-                #--deep --strict --options=runtime --timestamp
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/Standalone/VMPC2000XL.app \
+                --deep --strict --options=runtime --timestamp
                
-                #codesign --force -s "%dev-identity-app%" \
-                #-v ./binaries/AU/VMPC2000XL.component \
-                #--deep --strict --options=runtime --timestamp
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/AU/VMPC2000XL.component \
+                --deep --strict --options=runtime --timestamp
                
-                #codesign --force -s "%dev-identity-app%" \
-                #-v ./binaries/VST3/VMPC2000XL.vst3 \
-                #--deep --strict --options=runtime --timestamp
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/VST3/VMPC2000XL.vst3 \
+                --deep --strict --options=runtime --timestamp
             """.trimIndent()
         }
     }
@@ -700,17 +698,17 @@ object BuildMacOSInstaller : BuildType({
                                
                 packagesbuild --build-folder %teamcity.build.workingDir%/installers/${'$'}{version}/mac ./mac/VMPC2000XL.pkgproj
                 
-                #mv %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
-                #%teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg
+                mv %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
+                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg
                 
-                #productsign --sign "%dev-identity-installer%" \
-                #%teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg \
-                #%teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
+                productsign --sign "%dev-identity-installer%" \
+                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg \
+                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
                 
-                #xcrun notarytool submit %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
-                #--apple-id izmaelverhage@gmail.com --password %notarytool-password% --team-id %team-id% --wait
+                xcrun notarytool submit %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
+                --apple-id izmaelverhage@gmail.com --password %notarytool-password% --team-id %team-id% --wait
                 
-                #xcrun stapler staple %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
+                xcrun stapler staple %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
             """.trimIndent()
         }
     }
