@@ -201,6 +201,7 @@ object BuildMacOSBinaries : BuildType({
 
     artifactRules = """
         build/vmpc2000xl_artefacts/Release => binaries/macos
+        build/build/vmpc2000xl_Standalone.build/Release/DerivedSources/Entitlements.plist => binaries/macos
         -:build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
@@ -643,6 +644,7 @@ object CodesignMacOSBinaries : BuildType({
             scriptContent = """
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app \
+                --entitlements ./binaries/Entitlements.plist \
                 --deep --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
