@@ -219,26 +219,22 @@ object BuildMacOSBinaries : BuildType({
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_Standalone \
                 -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release \
-                -allowProvisioningUpdates
+                -configuration Release
                 
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_AU \
                 -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release \
-                -allowProvisioningUpdates
+                -configuration Release
                
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_VST3 \
                 -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release \
-                -allowProvisioningUpdates
+                -configuration Release
                
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_LV2 \
                 -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release \
-                -allowProvisioningUpdates
+                -configuration Release
                 """.trimIndent()
         }
     }
