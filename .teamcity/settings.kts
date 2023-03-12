@@ -215,27 +215,10 @@ object BuildMacOSBinaries : BuildType({
             scriptContent = """
                 mkdir build && cd build
                 cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -Wno-dev
-                
-                xcodebuild -project vmpc2000xl.xcodeproj \
-                -scheme vmpc2000xl_Standalone \
-                -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release \
-                -allowProvisioningUpdates
-                
-                xcodebuild -project vmpc2000xl.xcodeproj \
-                -scheme vmpc2000xl_AU \
-                -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release
-               
-                xcodebuild -project vmpc2000xl.xcodeproj \
-                -scheme vmpc2000xl_VST3 \
-                -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release
-               
-                xcodebuild -project vmpc2000xl.xcodeproj \
-                -scheme vmpc2000xl_LV2 \
-                -destination "generic/platform=macOS,name=Any Mac" \
-                -configuration Release
+
+                cmake --build . --config Release \
+                --target vmpc2000xl_Standalone vmpc2000xl_AU vmpc2000xl_VST3 vmpc2000xl_LV2 \
+                -- -allowProvisioningUpdates
             """.trimIndent()
         }
     }
@@ -642,7 +625,17 @@ object CodesignMacOSBinaries : BuildType({
         script {
             name = "Codesign binaries"
             scriptContent = """
-                echo 'Hi'
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/Standalone/VMPC2000XL.app \
+                --deep --strict --options=runtime --timestamp
+               
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/AU/VMPC2000XL.component \
+                --deep --strict --options=runtime --timestamp
+               
+               codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/VST3/VMPC2000XL.vst3 \
+                --deep --strict --options=runtime --timestamp
             """.trimIndent()
         }
     }
