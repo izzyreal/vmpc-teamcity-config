@@ -216,9 +216,30 @@ object BuildMacOSBinaries : BuildType({
                 mkdir build && cd build
                 cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -Wno-dev
 
-                cmake --build . --config Release \
-                --target vmpc2000xl_Standalone vmpc2000xl_AU vmpc2000xl_VST3 vmpc2000xl_LV2
-            """.trimIndent()
+                xcodebuild -project vmpc2000xl.xcodeproj \
+                -scheme vmpc2000xl_Standalone \
+                -destination "generic/platform=macOS,name=Any Mac" \
+                -configuration Release \
+                -allowProvisioningUpdates
+                
+                xcodebuild -project vmpc2000xl.xcodeproj \
+                -scheme vmpc2000xl_AU \
+                -destination "generic/platform=macOS,name=Any Mac" \
+                -configuration Release \
+                -allowProvisioningUpdates
+               
+                xcodebuild -project vmpc2000xl.xcodeproj \
+                -scheme vmpc2000xl_VST3 \
+                -destination "generic/platform=macOS,name=Any Mac" \
+                -configuration Release \
+                -allowProvisioningUpdates
+               
+                xcodebuild -project vmpc2000xl.xcodeproj \
+                -scheme vmpc2000xl_LV2 \
+                -destination "generic/platform=macOS,name=Any Mac" \
+                -configuration Release \
+                -allowProvisioningUpdates
+                """.trimIndent()
         }
     }
 
