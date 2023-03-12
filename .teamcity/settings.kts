@@ -625,17 +625,18 @@ object CodesignMacOSBinaries : BuildType({
         script {
             name = "Codesign binaries"
             scriptContent = """
-                codesign --force -s "%dev-identity-app%" \
-                -v ./binaries/Standalone/VMPC2000XL.app \
-                --deep --strict --options=runtime --timestamp
+                echo 'Skipping codesigning due to housekeeping issues.'
+                #codesign --force -s "%dev-identity-app%" \
+                #-v ./binaries/Standalone/VMPC2000XL.app \
+                #--deep --strict --options=runtime --timestamp
                
-                codesign --force -s "%dev-identity-app%" \
-                -v ./binaries/AU/VMPC2000XL.component \
-                --deep --strict --options=runtime --timestamp
+                #codesign --force -s "%dev-identity-app%" \
+                #-v ./binaries/AU/VMPC2000XL.component \
+                #--deep --strict --options=runtime --timestamp
                
-               codesign --force -s "%dev-identity-app%" \
-                -v ./binaries/VST3/VMPC2000XL.vst3 \
-                --deep --strict --options=runtime --timestamp
+                #codesign --force -s "%dev-identity-app%" \
+                #-v ./binaries/VST3/VMPC2000XL.vst3 \
+                #--deep --strict --options=runtime --timestamp
             """.trimIndent()
         }
     }
@@ -699,17 +700,17 @@ object BuildMacOSInstaller : BuildType({
                                
                 packagesbuild --build-folder %teamcity.build.workingDir%/installers/${'$'}{version}/mac ./mac/VMPC2000XL.pkgproj
                 
-                mv %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
-                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg
+                #mv %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
+                #%teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg
                 
-                productsign --sign "%dev-identity-installer%" \
-                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg \
-                %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
+                #productsign --sign "%dev-identity-installer%" \
+                #%teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1-unsigned.pkg \
+                #%teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
                 
-                xcrun notarytool submit %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
-                --apple-id izmaelverhage@gmail.com --password %notarytool-password% --team-id %team-id% --wait
+                #xcrun notarytool submit %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg \
+                #--apple-id izmaelverhage@gmail.com --password %notarytool-password% --team-id %team-id% --wait
                 
-                xcrun stapler staple %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
+                #xcrun stapler staple %teamcity.build.workingDir%/installers/${'$'}{version}/mac/VMPC2000XL-Installer-Intel-M1.pkg
             """.trimIndent()
         }
     }
