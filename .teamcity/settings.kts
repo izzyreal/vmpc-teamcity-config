@@ -104,7 +104,7 @@ object Release : BuildType({
                     --repo vmpc-juce --tag v${'$'}{version} --name \"VMPC2000XL v${'$'}{version}\" \
                     --description \"https://github.com/izzyreal/mpc/blob/master/CHANGELOG.md\""
                 
-                docker exec golang-github-release sh -c "sleep 1"
+                docker exec golang-github-release sh -c "sleep 2"
                 
                 docker exec -w /home/vmpc-release-binaries golang-github-release sh -c \
                   "github-release upload --security-token %github-secret% --user izzyreal --repo vmpc-juce \
