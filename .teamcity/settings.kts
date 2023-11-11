@@ -8,7 +8,7 @@ import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
-version = "2022.10"
+version = "2023.05"
 
 project {
     description = "Build and publish VMPC2000XL binaries"
@@ -232,11 +232,22 @@ object BuildMacOSBinaries : BuildType({
                 -destination "generic/platform=macOS,name=Any Mac" \
                 -configuration Release
                
+                xcodebuild -project vmpc2000xl.xcodeproj \
+                -scheme mpc-tests \
+                -destination "generic/platform=macOS,name=Any Mac" \
+                -configuration Release
+               
                 #xcodebuild -project vmpc2000xl.xcodeproj \
                 #-scheme vmpc2000xl_LV2 \
                 #-destination "generic/platform=macOS,name=Any Mac" \
                 #-configuration Release
                 """.trimIndent()
+        }
+        script {
+            name = "Run mpc-tests"
+            scriptContent = """
+                ./build/_deps/mpc-build/Release/mpc-tests.app/Contents/MacOS/mpc-tests --reporter JUnit::out=result-junit.xml
+            """.trimIndent()
         }
     }
 
@@ -248,6 +259,11 @@ object BuildMacOSBinaries : BuildType({
 
     features {
         swabra {
+        }
+        feature {
+            type = "xml-report-plugin"
+            param("xmlReportParsing.reportType", "junit")
+            param("xmlReportParsing.reportDirs", "result-junit.xml")
         }
     }
 
@@ -349,19 +365,31 @@ object BuildVmpc2000xlUbuntu : BuildType({
 
     steps {
         script {
+            name = "Build VMPC2000XL Standalone, LV2, VST3 and mpc-tests binaries"
             scriptContent = """
                 docker stop ubuntu-vmpc || true && docker rm ubuntu-vmpc || true
                 docker run -d --name ubuntu-vmpc -v ${'$'}(pwd):/home/vmpc-juce ubuntu-vmpc sleep infinity
                 docker exec -w /home/vmpc-juce ubuntu-vmpc sh -c \
                   "cmake -B build -G \"Ninja Multi-Config\" -Wno-dev && \
-                    cd build && ninja -f build-Release.ninja vmpc2000xl_All"
+                    cd build && ninja -f build-Release.ninja vmpc2000xl_All mpc-tests"
                 docker stop ubuntu-vmpc && docker remove ubuntu-vmpc
+            """.trimIndent()
+        }
+        script {
+            name = "Run mpc-tests"
+            scriptContent = """
+                ./build/_deps/mpc-build/Release/mpc-tests --reporter JUnit::out=result-junit.xml
             """.trimIndent()
         }
     }
 
     features {
         swabra {
+        }
+        feature {
+            type = "xml-report-plugin"
+            param("xmlReportParsing.reportType", "junit")
+            param("xmlReportParsing.reportDirs", "result-junit.xml")
         }
     }
 
@@ -460,13 +488,24 @@ object BuildVmpc2000xlWindows10_64bit : BuildType({
             scriptContent = """
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -Wno-dev
-                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3 mpc-tests
+            """.trimIndent()
+        }
+        script {
+            name = "Run mpc-tests"
+            scriptContent = """
+                build\_deps\mpc-build\Release\mpc-tests --reporter JUnit::out=result-junit.xml
             """.trimIndent()
         }
     }
 
     features {
         swabra {
+        }
+        feature {
+            type = "xml-report-plugin"
+            param("xmlReportParsing.reportType", "junit")
+            param("xmlReportParsing.reportDirs", "result-junit.xml")
         }
     }
 
