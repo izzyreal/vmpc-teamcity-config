@@ -215,7 +215,8 @@ object BuildMacOSBinaries : BuildType({
             name = "CMake configure and build"
             scriptContent = """
                 mkdir build && cd build
-                cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -Wno-dev
+                cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+                -Wno-dev -D CMAKE_EXE_LINKER_FLAGS=-Wl,-ld_classic
 
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme vmpc2000xl_Standalone \
