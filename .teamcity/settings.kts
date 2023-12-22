@@ -290,12 +290,10 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
         script {
             name = "CMake configure"
             scriptContent = """
-                mkdir build
                 cmake \
                 -Wno-dev \
                 -B build \
                 -G "Xcode" \
-                -DCMAKE_BUILD_TYPE="Release" \
                 -DCMAKE_SYSTEM_NAME=iOS
             """.trimIndent()
         }
@@ -303,7 +301,13 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
             name = "xcodebuild"
             scriptContent = """
                 cd build
-                xcodebuild -project vmpc2000xl.xcodeproj build -target vmpc2000xl_Standalone -parallelizeTargets -configuration Release -allowProvisioningUpdates
+                xcodebuild -project vmpc2000xl.xcodeproj \
+                build -target vmpc2000xl_Standalone \
+                -parallelizeTargets \
+                -configuration Release \
+                -allowProvisioningUpdates \
+                GCC_GENERATE_DEBUGGING_SYMBOLS=YES \
+                DEBUG_INFORMATION_FORMAT=dwarf-with-dsym
             """.trimIndent()
         }
         script {
