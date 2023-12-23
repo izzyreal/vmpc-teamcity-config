@@ -304,10 +304,8 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 xcodebuild -project vmpc2000xl.xcodeproj \
                 build -target vmpc2000xl_Standalone \
                 -parallelizeTargets \
-                -configuration Release \
-                -allowProvisioningUpdates \
-                GCC_GENERATE_DEBUGGING_SYMBOLS=YES \
-                DEBUG_INFORMATION_FORMAT=dwarf-with-dsym
+                -configuration RelWithDebInfo \
+                -allowProvisioningUpdates
             """.trimIndent()
         }
         script {
@@ -318,7 +316,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
                 -scheme vmpc2000xl_Standalone \
                 -allowProvisioningUpdates \
                 -sdk iphoneos \
-                -configuration Release \
+                -configuration RelWithDebInfo \
                 archive \
                 -archivePath "./vmpc2000xl_StandaloneAndAUv3.xcarchive"
             """.trimIndent()
