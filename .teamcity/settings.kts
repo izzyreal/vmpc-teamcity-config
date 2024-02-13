@@ -201,7 +201,8 @@ object BuildMacOSBinaries : BuildType({
 
     artifactRules = """
         build/vmpc2000xl_artefacts/Release => binaries/macos
-        build/vmpc2000xl.build/Release/vmpc2000xl_Standalone.build/DerivedSources/Entitlements.plist => binaries/macos
+        build/vmpc2000xl.build/Release/vmpc2000xl_Standalone.build/DerivedSources/Entitlements.plist => binaries/macos/StandaloneEntitlements.plist
+        build/vmpc2000xl.build/Release/vmpc2000xl_AUv3.build/DerivedSources/Entitlements.plist => binaries/macos/AUv3Entitlements.plist
         -:build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
@@ -690,16 +691,17 @@ object CodesignMacOSBinaries : BuildType({
         script {
             name = "Codesign binaries"
             scriptContent = """
-                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/Entitlements.plist
+                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/StandaloneEntitlements.plist
+                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/AUv3Entitlements.plist
 
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app/Contents/PlugIns/VMPC2000XL.appex \
-                --entitlements ./binaries/Entitlements.plist \
+                --entitlements ./binaries/AUv3Entitlements.plist \
                 --deep --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app \
-                --entitlements ./binaries/Entitlements.plist \
+                --entitlements ./binaries/StandaloneEntitlements.plist \
                 --deep --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
