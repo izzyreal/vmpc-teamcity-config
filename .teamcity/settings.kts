@@ -702,7 +702,7 @@ object CodesignMacOSBinaries : BuildType({
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app \
                 --entitlements ./binaries/StandaloneEntitlements.plist/Entitlements.plist \
-                --deep --strict --options=runtime --timestamp
+                --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/AU/VMPC2000XL.component \
