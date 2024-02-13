@@ -693,6 +693,11 @@ object CodesignMacOSBinaries : BuildType({
                 /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/Entitlements.plist
 
                 codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/Standalone/VMPC2000XL.app/Contents/PlugIns/VMPC2000XL.appex \
+                --entitlements ./binaries/Entitlements.plist \
+                --deep --strict --options=runtime --timestamp
+               
+                codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app \
                 --entitlements ./binaries/Entitlements.plist \
                 --deep --strict --options=runtime --timestamp
