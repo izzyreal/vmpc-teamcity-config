@@ -717,6 +717,7 @@ object CodesignMacOSBinaries : BuildType({
         artifacts(BuildMacOSBinaries) {
             buildRule = lastSuccessful()
             artifactRules = "binaries/macos => binaries"
+            cleanDestination = true
         }
     }
 
@@ -791,6 +792,7 @@ object BuildMacOSInstaller : BuildType({
         artifacts(CodesignMacOSBinaries) {
             buildRule = lastSuccessful()
             artifactRules = "binaries => binaries"
+            cleanDestination = true
         }
     }
 
