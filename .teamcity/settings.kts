@@ -191,7 +191,7 @@ object BuildBinaries : Project({
     buildType(BuildVmpc2000xlWindows7_64bit)
     buildType(BuildVmpc2000xlWindows10_32bit)
     buildType(BuildVmpc2000xlWindows10_64bit)
-    buildType(BuildBinaries_BuildVmpc2000xlIOS)
+    buildType(BuildVmpc2000xliOS)
     buildType(BuildVmpc2000xlUbuntu)
 })
 
@@ -214,6 +214,7 @@ object BuildMacOSBinaries : BuildType({
         script {
             name = "CMake configure and build"
             scriptContent = """
+                rm -rf build
                 mkdir build && cd build
                 cmake .. -G "Xcode" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
                 -Wno-dev -D CMAKE_EXE_LINKER_FLAGS=-Wl,-ld_classic
@@ -273,7 +274,7 @@ object BuildMacOSBinaries : BuildType({
     }
 })
 
-object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
+object BuildVmpc2000xliOS : BuildType({
     name = "Build VMPC2000XL iOS"
     description = "Build VMPC2000XL standalone and AUv3"
 
@@ -290,6 +291,7 @@ object BuildBinaries_BuildVmpc2000xlIOS : BuildType({
         script {
             name = "CMake configure"
             scriptContent = """
+                rm -rf build
                 cmake \
                 -Wno-dev \
                 -B build \
@@ -419,6 +421,7 @@ object BuildVmpc2000xlWindows10_32bit : BuildType({
         script {
             name = "CMake configure and build"
             scriptContent = """
+                rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -A Win32 -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
@@ -454,6 +457,7 @@ object BuildVmpc2000xlWindows7_32bit : BuildType({
         script {
             name = "CMake configure and build"
             scriptContent = """
+                rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1 -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
@@ -489,6 +493,7 @@ object BuildVmpc2000xlWindows10_64bit : BuildType({
         script {
             name = "CMake configure and build"
             scriptContent = """
+                rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3 mpc-tests
@@ -535,6 +540,7 @@ object BuildVmpc2000xlWindows7_64bit : BuildType({
         script {
             name = "CMake configure and build"
             scriptContent = """
+                rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -DVMPC2000XL_WIN7=1 -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
