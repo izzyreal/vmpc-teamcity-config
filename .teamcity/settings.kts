@@ -693,9 +693,12 @@ object CodesignMacOSBinaries : BuildType({
             scriptContent = """
                 /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/StandaloneEntitlements.plist/Entitlements.plist
                 /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/AUv3Entitlements.plist/Entitlements.plist
+                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.automation.apple-events' ./binaries/AUv3Entitlements.plist/Entitlements.plist
+                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.device.audio-input' ./binaries/AUv3Entitlements.plist/Entitlements.plist
 
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app/Contents/PlugIns/VMPC2000XL.appex \
+                --entitlements ./binaries/AUv3Entitlements.plist/Entitlements.plist \
                 --deep --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
