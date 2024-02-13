@@ -201,8 +201,8 @@ object BuildMacOSBinaries : BuildType({
 
     artifactRules = """
         build/vmpc2000xl_artefacts/Release => binaries/macos
-        build/vmpc2000xl.build/Release/vmpc2000xl_Standalone.build/DerivedSources/Entitlements.plist => binaries/macos/StandaloneEntitlements.plist
-        build/vmpc2000xl.build/Release/vmpc2000xl_AUv3.build/DerivedSources/Entitlements.plist => binaries/macos/AUv3Entitlements.plist
+        build/vmpc2000xl.build/Release/vmpc2000xl_Standalone.build/DerivedSources/Entitlements.plist => binaries/macos/StandaloneEntitlements
+        build/vmpc2000xl.build/Release/vmpc2000xl_AUv3.build/DerivedSources/Entitlements.plist => binaries/macos/AUv3Entitlements
         -:build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
@@ -691,19 +691,14 @@ object CodesignMacOSBinaries : BuildType({
         script {
             name = "Codesign binaries"
             scriptContent = """
-                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/StandaloneEntitlements.plist/Entitlements.plist
-                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.get-task-allow' ./binaries/AUv3Entitlements.plist/Entitlements.plist
-                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.automation.apple-events' ./binaries/AUv3Entitlements.plist/Entitlements.plist
-                /usr/libexec/PlistBuddy -c 'Delete :com.apple.security.device.audio-input' ./binaries/AUv3Entitlements.plist/Entitlements.plist
-
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app/Contents/PlugIns/VMPC2000XL.appex \
-                --entitlements ./binaries/AUv3Entitlements.plist/Entitlements.plist \
+                --entitlements ./binaries/AUv3Entitlements/Entitlements.plist \
                 --deep --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/Standalone/VMPC2000XL.app \
-                --entitlements ./binaries/StandaloneEntitlements.plist/Entitlements.plist \
+                --entitlements ./binaries/StandaloneEntitlements/Entitlements.plist \
                 --strict --options=runtime --timestamp
                
                 codesign --force -s "%dev-identity-app%" \
@@ -774,6 +769,7 @@ object BuildMacOSInstaller : BuildType({
                 mkdir -p installers/${'$'}{version}/mac
                 
                 chmod +x ./binaries/Standalone/VMPC2000XL.app/Contents/MacOS/VMPC2000XL
+                chmod +x ./binaries/Standalone/VMPC2000XL.app/Contents/PlugIns/VMPC2000XL.appex/Contents/MacOS/VMPC2000XL
                                
                 packagesbuild --build-folder %teamcity.build.workingDir%/installers/${'$'}{version}/mac ./mac/VMPC2000XL.pkgproj
                 
