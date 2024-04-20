@@ -830,7 +830,10 @@ object Vmpc2000xlDocumentation : Project({
 object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
     name = "Build and publish HTML and PDF"
 
-    artifactRules = "_build => _build"
+    artifactRules = """
+        _build => _build
+        _build_pdf => _build_pdf
+    """.trimIndent()
 
     params {
         param("sftp-user", "%vault:kv/izmarnl!/sftp-user%")
@@ -845,11 +848,8 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
         script {
             name = "Build HTML and PDF"
             scriptContent = """
-                docker stop sphinx-build && docker remove sphinx-build
-                docker run -d --name sphinx-build -v ${'$'}(pwd):/home/vmpc-docs sphinx-build sleep infinity
-                docker exec -w /home/vmpc-docs sphinx-build sh -c "sphinx-build . ./_build"
-                docker exec -w /home/vmpc-docs sphinx-build sh -c "sphinx-build -b rinoh . ./_build/rinoh"
-                docker stop sphinx-build && docker remove sphinx-build
+                docker run --rm -v .:/docs vmpcsphinx sphinx-build . ./_build
+                docker run --rm -v .:/docs vmpcsphinx sphinx-build -b rinoh . ./_build_pdf
             """.trimIndent()
         }
         sshUpload {
@@ -865,7 +865,7 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
         sshUpload {
             name = "Publish PDF"
             transportProtocol = SSHUpload.TransportProtocol.SFTP
-            sourcePath = "_build/rinoh/vmpc2000xl.pdf"
+            sourcePath = "_build_pdf/vmpc2000xl.pdf"
             targetUrl = "sftp.izmar.nl:public/sites/vmpcdocs.izmar.nl"
             authMethod = password {
                 username = "%sftp-user%"
