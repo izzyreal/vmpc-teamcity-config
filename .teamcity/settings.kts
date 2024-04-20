@@ -1,9 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.swabra
-import jetbrains.buildServer.configs.kotlin.buildSteps.SSHUpload
-import jetbrains.buildServer.configs.kotlin.buildSteps.powerShell
-import jetbrains.buildServer.configs.kotlin.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.buildSteps.sshUpload
+import jetbrains.buildServer.configs.kotlin.buildSteps.*
 import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
@@ -836,8 +833,8 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
     """.trimIndent()
 
     params {
-        param("sftp-user", "%vault:kv/izmarnl!/sftp-user%")
-        param("sftp-password", "%vault:kv/izmarnl!/sftp-password%")
+        param("ftp-user", "%vault:kv/data/izmarnl!/ftp-user%")
+        param("ftp-password", "%vault:kv/data/izmarnl!/ftp-password%")
     }
 
     vcs {
@@ -852,25 +849,34 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
                 docker run --rm -v .:/docs vmpcsphinx sphinx-build -b rinoh . ./_build_pdf
             """.trimIndent()
         }
-        sshUpload {
-            name = "Publish HTML"
-            transportProtocol = SSHUpload.TransportProtocol.SFTP
-            sourcePath = "_build/**"
-            targetUrl = "sftp.izmar.nl:public/sites/vmpcdocs.izmar.nl"
-            authMethod = password {
-                username = "%sftp-user%"
-                password = "%sftp-password%"
-            }
-        }
-        sshUpload {
-            name = "Publish PDF"
-            transportProtocol = SSHUpload.TransportProtocol.SFTP
-            sourcePath = "_build_pdf/vmpc2000xl.pdf"
-            targetUrl = "sftp.izmar.nl:public/sites/vmpcdocs.izmar.nl"
-            authMethod = password {
-                username = "%sftp-user%"
-                password = "%sftp-password%"
-            }
+        script {
+            name = "Upload Files via FTP"
+            scriptContent = """
+            #!/bin/bash
+
+            FTP_HOST="server056.mijndomeinhosting.nl"
+            FTP_TARGET_DIR="vmpcdocs.izmar.nl"
+
+            FTP_USER="%ftp-user%"
+            FTP_PASS="%ftp-password%"
+
+            LOCAL_DIR="_build"  # Adjust this path as necessary
+            PDF_FILE="_build_pdf/vmpc2000xl.pdf"
+
+            lftp -e "
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            set ftp:passive-mode true;
+            open -u ${'$'}FTP_USER,${'$'}FTP_PASS ${'$'}FTP_HOST;
+            lcd ${'$'}LOCAL_DIR;
+            cd ${'$'}FTP_TARGET_DIR;
+            mirror --reverse --verbose .;
+            lcd ../_build_pdf;
+            put vmpc2000xl.pdf;
+            bye;
+            "
+            """.trimIndent()
+            formatStderrAsError = true
         }
     }
 
