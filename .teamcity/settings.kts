@@ -8,7 +8,7 @@ import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
-version = "2023.05"
+version = "2024.03"
 
 project {
     description = "Build and publish VMPC2000XL binaries"
