@@ -179,6 +179,7 @@ object HttpsGithubComIzzyrealVmpcJuce : GitVcsRoot({
     url = "https://github.com/izzyreal/vmpc-juce"
     branch = "refs/heads/master"
     branchSpec = "refs/heads/*"
+    authMethod = anonymous()
 })
 
 
@@ -814,6 +815,7 @@ object BuildInstallers_VmpcInstallerScripts : GitVcsRoot({
     url = "https://github.com/izzyreal/vmpc-installer-scripts"
     branch = "master"
     checkoutPolicy = AgentCheckoutPolicy.SHALLOW_CLONE
+    authMethod = anonymous()
 })
 
 
@@ -893,4 +895,5 @@ object Vmpc2000xlDocumentation_HttpsGithubComIzzyrealVmpcDocs : GitVcsRoot({
     url = "https://github.com/izzyreal/vmpc-docs"
     branch = "refs/heads/master"
     branchSpec = "refs/heads/*"
+    authMethod = anonymous()
 })
