@@ -176,7 +176,7 @@ object Release : BuildType({
 
 object HttpsGithubComIzzyrealVmpcJuce : GitVcsRoot({
     name = "https://github.com/izzyreal/vmpc-juce"
-    url = "https://github.com/izzyreal/vmpc-juce"
+    url = "https://github.com/izzyreal/vmpc-juce.git"
     branch = "refs/heads/master"
     branchSpec = "refs/heads/*"
     authMethod = anonymous()
@@ -812,7 +812,7 @@ object BuildMacOSInstaller : BuildType({
 
 object BuildInstallers_VmpcInstallerScripts : GitVcsRoot({
     name = "vmpc-installer-scripts"
-    url = "https://github.com/izzyreal/vmpc-installer-scripts"
+    url = "https://github.com/izzyreal/vmpc-installer-scripts.git"
     branch = "master"
     checkoutPolicy = AgentCheckoutPolicy.SHALLOW_CLONE
     authMethod = anonymous()
@@ -891,8 +891,8 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
 })
 
 object Vmpc2000xlDocumentation_HttpsGithubComIzzyrealVmpcDocs : GitVcsRoot({
-    name = "https://github.com/izzyreal/vmpc-docs#refs/heads/master"
-    url = "https://github.com/izzyreal/vmpc-docs"
+    name = "https://github.com/izzyreal/vmpc-docs.git#refs/heads/master"
+    url = "https://github.com/izzyreal/vmpc-docs.git"
     branch = "refs/heads/master"
     branchSpec = "refs/heads/*"
     authMethod = anonymous()
