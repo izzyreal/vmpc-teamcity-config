@@ -83,7 +83,7 @@ object Release : BuildType({
     name = "Release"
 
     params {
-        param("github-secret", "%vault:kv/gh!/token%")
+        param("github-secret", "%vault:kv/data/gh!/token%")
     }
 
     steps {
@@ -739,10 +739,10 @@ object BuildMacOSInstaller : BuildType({
 
     params {
         param("env.version", "0")
-        param("github-secret", "%vault:kv/gh!/token%")
-        param("notarytool-password", "%vault:kv/notarytool!/password%")
-        param("team-id", "%vault:kv/apple-id!/team-id%")
-        param("dev-identity-installer", "%vault:kv/apple-id!/dev-identity-installer%")
+        param("github-secret", "%vault:kv/data/gh!/token%")
+        param("notarytool-password", "%vault:kv/data/notarytool!/password%")
+        param("team-id", "%vault:kv/data/apple-id!/team-id%")
+        param("dev-identity-installer", "%vault:kv/data/apple-id!/dev-identity-installer%")
     }
 
     vcs {
