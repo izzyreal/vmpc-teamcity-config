@@ -682,7 +682,7 @@ object CodesignMacOSBinaries : BuildType({
     publishArtifacts = PublishMode.SUCCESSFUL
 
     params {
-        param("dev-identity-app", "%vault:kv/apple-id!/dev-identity-app%")
+        param("dev-identity-app", "%vault:kv/data/apple-id!/dev-identity-app%")
     }
 
     steps {
