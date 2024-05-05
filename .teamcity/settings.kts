@@ -199,8 +199,8 @@ object BuildMacOSBinaries : BuildType({
 
     artifactRules = """
         build/vmpc2000xl_artefacts/Release => binaries/macos
-        build/vmpc2000xl.build/Release/vmpc2000xl_Standalone.build/DerivedSources/Entitlements.plist => binaries/macos/StandaloneEntitlements
-        build/vmpc2000xl.build/Release/vmpc2000xl_AUv3.build/DerivedSources/Entitlements.plist => binaries/macos/AUv3Entitlements
+        build/build/vmpc2000xl_Standalone.build/Release/DerivedSources/Entitlements.plist => binaries/macos/StandaloneEntitlements
+        build/build/vmpc2000xl_AUv3.build/Release/DerivedSources/Entitlements.plist => binaries/macos/AUv3Entitlements
         -:build/vmpc2000xl_artefacts/Release/libVMPC2000XL_SharedCode.a
     """.trimIndent()
     publishArtifacts = PublishMode.SUCCESSFUL
