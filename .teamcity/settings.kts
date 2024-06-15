@@ -167,7 +167,7 @@ object Release : BuildType({
     }
 
     requirements {
-        equals("teamcity.agent.name", "localhost")
+        equals("teamcity.agent.jvm.os.name", "Linux")
     }
 })
 
