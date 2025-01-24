@@ -845,8 +845,8 @@ object Vmpc2000xlDocumentation_BuildAndPublishHtml : BuildType({
         script {
             name = "Build HTML and PDF"
             scriptContent = """
-                docker run --rm -v .:/docs vmpcsphinx sphinx-build . ./_build
-                docker run --rm -v .:/docs vmpcsphinx sphinx-build -b rinoh . ./_build_pdf
+                docker run --rm -v .:/docs vmpcsphinx sphinx-build /docs /docs/_build
+                docker run --rm -v .:/docs vmpcsphinx sphinx-build -b rinoh /docs /docs/_build_pdf
             """.trimIndent()
         }
         script {
