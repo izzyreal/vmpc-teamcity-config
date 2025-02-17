@@ -458,7 +458,7 @@ object BuildVmpc2000xlWindows7_32bit : BuildType({
             scriptContent = """
                 rmdir /s /q build
                 mkdir build && cd build
-                cmake .. -G "Visual Studio 17 2022" -A Win32 -DVMPC2000XL_WIN7=1 -Wno-dev
+                cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1 -Wno-dev
                 cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
             """.trimIndent()
         }
