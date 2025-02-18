@@ -234,6 +234,11 @@ object BuildMacOSBinaries : BuildType({
                 -configuration Release
                
                 xcodebuild -project vmpc2000xl.xcodeproj \
+                -scheme vmpc2000xl_LV2 \
+                -destination "generic/platform=macOS,name=Any Mac" \
+                -configuration Release
+               
+                xcodebuild -project vmpc2000xl.xcodeproj \
                 -scheme mpc-tests \
                 -destination "generic/platform=macOS,name=Any Mac" \
                 -configuration Release
@@ -713,6 +718,10 @@ object CodesignMacOSBinaries : BuildType({
                 codesign --force -s "%dev-identity-app%" \
                 -v ./binaries/VST3/VMPC2000XL.vst3 \
                 --deep --strict --options=runtime --timestamp
+               
+                codesign --force -s "%dev-identity-app%" \
+                -v ./binaries/LV2/VMPC2000XL.lv2/libVMPC2000XL.so \
+                --strict --timestamp
             """.trimIndent()
         }
     }
@@ -765,6 +774,7 @@ object BuildMacOSInstaller : BuildType({
                 packagesutil set package-1 version ${'$'}version --file ./mac/VMPC2000XL.pkgproj
                 packagesutil set package-2 version ${'$'}version --file ./mac/VMPC2000XL.pkgproj
                 packagesutil set package-3 version ${'$'}version --file ./mac/VMPC2000XL.pkgproj
+                packagesutil set package-4 version ${'$'}version --file ./mac/VMPC2000XL.pkgproj
                 
                 sed -i '' "s#<string>VMPC2000XL .*</string>#<string>VMPC2000XL ${'$'}version</string>#g" ./mac/VMPC2000XL.pkgproj
                 
