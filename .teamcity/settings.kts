@@ -495,7 +495,7 @@ object BuildVmpc2000xlWindows10_64bit : BuildType({
                 rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -Wno-dev
-                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3 mpc-tests
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3 vmpc2000xl_LV2 mpc-tests
             """.trimIndent()
         }
         script {
