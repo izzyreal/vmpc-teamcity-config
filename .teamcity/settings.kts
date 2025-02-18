@@ -423,7 +423,7 @@ object BuildVmpc2000xlWindows10_32bit : BuildType({
                 rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -A Win32 -Wno-dev
-                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3 vmpc2000xl_LV2
             """.trimIndent()
         }
     }
@@ -459,7 +459,7 @@ object BuildVmpc2000xlWindows7_32bit : BuildType({
                 rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -A Win32 -DVMPC2000XL_WIN7=1 -Wno-dev
-                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3 vmpc2000xl_LV2
             """.trimIndent()
         }
     }
@@ -542,7 +542,7 @@ object BuildVmpc2000xlWindows7_64bit : BuildType({
                 rmdir /s /q build
                 mkdir build && cd build
                 cmake .. -G "Visual Studio 16 2019" -DVMPC2000XL_WIN7=1 -Wno-dev
-                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3
+                cmake --build . --config Release --target vmpc2000xl_Standalone vmpc2000xl_VST3 vmpc2000xl_LV2
             """.trimIndent()
         }
     }
@@ -586,9 +586,11 @@ object BuildWindows10Installer : BuildType({
                     
                     ${'$'}env:32_BIT_EXECUTABLE_PATH = '..\binaries\win32\Standalone\VMPC2000XL.exe'
                     ${'$'}env:32_BIT_VST3_PATH       = '..\binaries\win32\VST3\VMPC2000XL.vst3\*'
+                    ${'$'}env:32_BIT_LV2_PATH        = '..\binaries\win32\LV2\VMPC2000XL.lv2\*'
                     
                     ${'$'}env:64_BIT_EXECUTABLE_PATH = '..\binaries\win64\Standalone\VMPC2000XL.exe'
                     ${'$'}env:64_BIT_VST3_PATH       = '..\binaries\win64\VST3\VMPC2000XL.vst3\*'
+                    ${'$'}env:64_BIT_LV2_PATH        = '..\binaries\win64\LV2\VMPC2000XL.lv2\*'
                     
                     ${'$'}env:DEMO_DATA_PATH         = '..\demo_data\*'
                     ${'$'}env:INSTALLER_SCRIPT_PATH  = '%teamcity.build.workingDir%\win\vmpc.iss'
@@ -640,9 +642,11 @@ object BuildWindows7Installer : BuildType({
                     
                     ${'$'}env:32_BIT_EXECUTABLE_PATH = '..\binaries\win32\Standalone\VMPC2000XL.exe'
                     ${'$'}env:32_BIT_VST3_PATH       = '..\binaries\win32\VST3\VMPC2000XL.vst3\*'
+                    ${'$'}env:32_BIT_LV2_PATH        = '..\binaries\win32\LV2\VMPC2000XL.lv2\*'
                     
                     ${'$'}env:64_BIT_EXECUTABLE_PATH = '..\binaries\win64\Standalone\VMPC2000XL.exe'
                     ${'$'}env:64_BIT_VST3_PATH       = '..\binaries\win64\VST3\VMPC2000XL.vst3\*'
+                    ${'$'}env:64_BIT_LV2_PATH        = '..\binaries\win64\LV2\VMPC2000XL.lv2\*'
                     
                     ${'$'}env:DEMO_DATA_PATH         = '..\demo_data\*'
                     ${'$'}env:INSTALLER_SCRIPT_PATH  = '%teamcity.build.workingDir%\win\vmpc.iss'
