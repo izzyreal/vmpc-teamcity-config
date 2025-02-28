@@ -207,6 +207,8 @@ object BuildMacOSBinaries : BuildType({
 
     vcs {
         root(HttpsGithubComIzzyrealVmpcJuce)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -289,6 +291,8 @@ object BuildVmpc2000xliOS : BuildType({
 
     vcs {
         root(HttpsGithubComIzzyrealVmpcJuce)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -370,6 +374,8 @@ object BuildVmpc2000xlUbuntu : BuildType({
 
     vcs {
         root(HttpsGithubComIzzyrealVmpcJuce)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -419,6 +425,8 @@ object BuildVmpc2000xlWindows10_32bit : BuildType({
 
     vcs {
         root(HttpsGithubComIzzyrealVmpcJuce)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -455,6 +463,8 @@ object BuildVmpc2000xlWindows7_32bit : BuildType({
 
     vcs {
         root(HttpsGithubComIzzyrealVmpcJuce)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -491,6 +501,8 @@ object BuildVmpc2000xlWindows10_64bit : BuildType({
 
     vcs {
         root(HttpsGithubComIzzyrealVmpcJuce)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -538,6 +550,8 @@ object BuildVmpc2000xlWindows7_64bit : BuildType({
 
     vcs {
         root(HttpsGithubComIzzyrealVmpcJuce)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -580,6 +594,8 @@ object BuildWindows10Installer : BuildType({
 
     vcs {
         root(BuildInstallers_VmpcInstallerScripts)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -636,6 +652,8 @@ object BuildWindows7Installer : BuildType({
 
     vcs {
         root(BuildInstallers_VmpcInstallerScripts)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
     }
 
     steps {
@@ -760,7 +778,6 @@ object BuildMacOSInstaller : BuildType({
 
     vcs {
         root(BuildInstallers_VmpcInstallerScripts)
-
         checkoutMode = CheckoutMode.ON_AGENT
         cleanCheckout = true
     }
