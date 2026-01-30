@@ -88,6 +88,45 @@ object Release : BuildType({
 
     steps {
         script {
+            name = "Tag repos"
+            scriptContent = """
+                set -e
+
+                version=${'$'}(cat version.txt)
+                tag="vmpc-v${'$'}{version}"
+
+                git config --global user.email "izzyreal-cicd-agent@local"
+                git config --global user.name "izzyreal-cicd-agent"
+
+                rm -rf _tagrepos
+                mkdir -p _tagrepos
+                cd _tagrepos
+
+                tag_repo () {
+                    repo=${'$'}1
+                    branch=${'$'}2
+                    dir=${'$'}3
+
+                    rm -rf "${'$'}dir"
+                    mkdir -p "${'$'}dir"
+                    cd "${'$'}dir"
+
+                    git init -q
+                    git remote add origin "https://x-access-token:%github-secret%@github.com/${'$'}repo.git"
+                    git fetch -q --depth 1 origin "${'$'}branch"
+
+                    git tag -f "${'$'}tag" FETCH_HEAD
+                    git push -q --force origin "refs/tags/${'$'}tag"
+
+                    cd ..
+                }
+
+                tag_repo "izzyreal/vmpc-juce" "master" "vmpc-juce"
+                tag_repo "izzyreal/mpc" "master" "mpc"
+                tag_repo "izzyreal/JUCE" "7.0.9-vmpc" "JUCE"
+            """.trimIndent()
+        }
+        script {
             name = "Release"
             scriptContent = """
                 version=${'$'}(cat version.txt)
