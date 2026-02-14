@@ -172,7 +172,7 @@ object Release : BuildType({
                     --tag v${'$'}{version} --name VMPC2000XL-Ubuntu20-x86_64-VST3.zip \
                     --file ${'$'}{version}/ubuntu/VMPC2000XL-Ubuntu20-x86_64-VST3.zip"
                 
-                docker stop golang-github-release && docker remove golang-github-release
+                docker stop golang-github-release && docker rm golang-github-release
             """.trimIndent()
         }
     }
@@ -426,7 +426,7 @@ object BuildVmpc2000xlUbuntu : BuildType({
                 docker exec -w /home/vmpc-juce ubuntu-vmpc sh -c \
                   "cmake -B build -G \"Ninja Multi-Config\" -Wno-dev && \
                     cd build && ninja -f build-Release.ninja vmpc2000xl_All mpc-tests"
-                docker stop ubuntu-vmpc && docker remove ubuntu-vmpc
+                docker stop ubuntu-vmpc && docker rm ubuntu-vmpc
             """.trimIndent()
         }
         script {
